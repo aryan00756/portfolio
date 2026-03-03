@@ -160,7 +160,7 @@ export default function Home() {
         {/* CONTACT SECTION / RADIAL ORBITAL TIMELINE */}
         <section className="min-h-[100vh] flex flex-col items-center justify-center relative py-20 overflow-hidden">
           {/* LAYER 1: Dark overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b max-md:from-black/80 from-transparent via-black/40 to-black/80 pointer-events-none z-0" />
+          <div className="absolute inset-0 bg-transparent pointer-events-none z-0" />
 
           {/* LAYER 3: Heading (Top) */}
           <motion.div
