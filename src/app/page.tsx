@@ -75,8 +75,7 @@ export default function Home() {
               SYSTEM <span className="text-white">OVERRIDE.</span>
             </h2>
             <p className="text-lg md:text-xl leading-relaxed text-gray-300 font-light">
-              I am an aspiring AI specialist, building systems that perceive, generate, and adapt.
-              Driven by the convergence of deep learning and creative engineering, my focus lies in crafting intelligent models that push boundaries.
+              AI engineer working across Machine Learning, Deep Learning, Computer Vision, and Generative AI, focused on building end-to-end intelligent systems. I design, train, and optimize models, then integrate them into scalable full-stack applications built for real-world deployment.
             </p>
           </motion.div>
         </section>
