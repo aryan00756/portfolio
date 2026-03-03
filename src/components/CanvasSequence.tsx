@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
@@ -209,32 +210,53 @@ export default function CanvasSequence() {
         };
     }, [loaded]);
 
+    // Control body overflow while loading
+    useEffect(() => {
+        if (!loaded) {
+            document.body.style.overflow = "hidden";
+        } else {
+            const timer = setTimeout(() => {
+                document.body.style.overflow = "";
+            }, 1000); // 1s for fadeout
+            return () => clearTimeout(timer);
+        }
+    }, [loaded]);
+
     return (
-        <div className="fixed inset-0 z-0 pointer-events-none bg-[#050508]">
-            {!loaded && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-[#FF4500] z-20 font-mono tracking-widest gap-4">
-                    <div className="text-xl">INITIALIZING NEURAL LINK...</div>
-                    <div className="w-64 h-1 bg-[#050508] border border-[#00BFFF]/30 rounded overflow-hidden">
-                        <div
-                            className="h-full bg-[#FF4500] shadow-[0_0_10px_#FF4500] transition-all duration-[3000ms] ease-out"
-                            style={{ width: `${loadingProgress}%` }}
-                        />
-                    </div>
-                </div>
-            )}
+        <>
+            <AnimatePresence>
+                {!loaded && (
+                    <motion.div
+                        initial={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1, ease: "easeInOut" }}
+                        className="fixed inset-0 flex flex-col items-center justify-center bg-[#050508] text-[#FF4500] z-[100] font-mono tracking-widest gap-4 pointer-events-auto"
+                    >
+                        <div className="text-xl text-center px-4">INITIALIZING NEURAL LINK...</div>
+                        <div className="w-64 h-1 bg-[#050508] border border-[#00BFFF]/30 rounded overflow-hidden">
+                            <div
+                                className="h-full bg-[#FF4500] shadow-[0_0_10px_#FF4500] transition-all duration-[3000ms] ease-out"
+                                style={{ width: `${loadingProgress}%` }}
+                            />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            <canvas
-                ref={canvasRef}
-                className={`w-full h-full object-cover transition-opacity duration-[2000ms] ${loaded ? "opacity-60" : "opacity-0"
-                    }`}
-                style={{
-                    filter: "drop-shadow(0 0 25px rgba(255, 69, 0, 0.15)) drop-shadow(0 0 25px rgba(0, 191, 255, 0.15))",
-                }}
-            />
+            <div className="fixed inset-0 z-0 pointer-events-none bg-[#050508]">
+                <canvas
+                    ref={canvasRef}
+                    className={`w-full h-full object-cover transition-opacity duration-[2000ms] ${loaded ? "opacity-60" : "opacity-0"
+                        }`}
+                    style={{
+                        filter: "drop-shadow(0 0 25px rgba(255, 69, 0, 0.15)) drop-shadow(0 0 25px rgba(0, 191, 255, 0.15))",
+                    }}
+                />
 
-            {/* Vignette / Dark gradient overlay to ensure text is legible */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508]/60 mix-blend-multiply" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050508_100%)] opacity-80" />
-        </div>
+                {/* Vignette / Dark gradient overlay to ensure text is legible */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508]/60 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050508_100%)] opacity-80" />
+            </div>
+        </>
     );
 }
