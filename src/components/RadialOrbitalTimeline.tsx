@@ -20,7 +20,7 @@ interface NodeData {
     content: string;
     category: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    icon: React.ElementType<any>;
+    icon: any;
     status: 'completed' | 'in-progress' | 'pending';
     energy: number;
     relatedIds: number[];
