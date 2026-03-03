@@ -61,7 +61,7 @@ const NODES: NodeData[] = [
         status: "completed",
         energy: 85,
         relatedIds: [1, 5],
-        actionUrl: "https://github.com/aryanyadav",
+        actionUrl: "https://github.com/aryan00756",
         actionText: "Visit GitHub",
     },
     {
@@ -74,7 +74,7 @@ const NODES: NodeData[] = [
         status: "completed",
         energy: 80,
         relatedIds: [2, 5],
-        actionUrl: "https://linkedin.com/in/aryanyadav", // Placeholder
+        actionUrl: "https://www.linkedin.com/in/aryan0203", // Placeholder
         actionText: "Visit LinkedIn",
     },
     {
@@ -87,7 +87,7 @@ const NODES: NodeData[] = [
         status: "pending",
         energy: 75,
         relatedIds: [3, 4],
-        actionUrl: "mailto:hello@example.com", // Placeholder
+        actionUrl: "mailto:ay6033756@gmail.com", // Placeholder
         actionText: "Send Email",
     },
     {
