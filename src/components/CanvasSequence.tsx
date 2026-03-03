@@ -14,9 +14,6 @@ export default function CanvasSequence() {
     const framesRef = useRef<HTMLImageElement[]>([]);
     const currentFrameRef = useRef(0);
     const requestRef = useRef<number>(0);
-    const idleTimeRef = useRef(0);
-    const isIdleRef = useRef(true);
-    const lastMouseXRef = useRef(-1);
 
     // Preloading frames
     useEffect(() => {
@@ -183,7 +180,7 @@ export default function CanvasSequence() {
 
                 if (self.direction === 1) {
                     state.direction = 1;
-                    let newFrame = Math.floor(progress * (FRAME_COUNT - 1));
+                    const newFrame = Math.floor(progress * (FRAME_COUNT - 1));
                     if (newFrame !== currentFrameRef.current) {
                         currentFrameRef.current = newFrame;
                         render();
@@ -191,7 +188,7 @@ export default function CanvasSequence() {
                 } else if (self.direction === -1) {
                     state.direction = -1;
                     // The prompt specifically asked for inverse mapping on scroll up:
-                    let newFrame = Math.floor((1 - progress) * (FRAME_COUNT - 1));
+                    const newFrame = Math.floor((1 - progress) * (FRAME_COUNT - 1));
                     if (newFrame !== currentFrameRef.current) {
                         currentFrameRef.current = newFrame;
                         render();

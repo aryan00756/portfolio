@@ -181,7 +181,7 @@ export default function Home() {
               variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
               className="font-display text-4xl md:text-[4rem] font-bold mb-4 tracking-tighter uppercase leading-none"
             >
-              LET'S BUILD <br className="md:hidden" /> THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF4500] to-[#00BFFF]">FUTURE.</span>
+              LET&apos;S BUILD <br className="md:hidden" /> THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF4500] to-[#00BFFF]">FUTURE.</span>
             </motion.h2>
             <motion.p
               variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}

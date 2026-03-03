@@ -19,6 +19,7 @@ interface NodeData {
     date: string;
     content: string;
     category: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: React.ElementType<any>;
     status: 'completed' | 'in-progress' | 'pending';
     energy: number;
@@ -141,6 +142,7 @@ export default function RadialOrbitalTimeline({ className, onNodeStateChange }: 
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsMounted(true);
         if (typeof window !== 'undefined') {
             setViewportSize({ w: window.innerWidth, h: window.innerHeight });
@@ -189,8 +191,8 @@ export default function RadialOrbitalTimeline({ className, onNodeStateChange }: 
         let top = absY > viewportSize.h / 2 ? -(cardH + 20) : 60;
         let left = absX > viewportSize.w / 2 ? -(cardW - 40) : -(cardW / 2 - 20);
 
-        let absoluteLeft = absX + left;
-        let absoluteTop = absY + top;
+        const absoluteLeft = absX + left;
+        const absoluteTop = absY + top;
 
         if (absoluteLeft < 16) left += (16 - absoluteLeft);
         if (absoluteLeft + cardW > viewportSize.w - 16)

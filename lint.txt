@@ -1,0 +1,72 @@
+﻿
+> portfolio@0.1.0 lint
+> eslint
+
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\app\page.tsx
+    7:10  warning  'Github' is defined but never used                               @typescript-eslint/no-unused-vars
+    7:18  warning  'Linkedin' is defined but never used                             @typescript-eslint/no-unused-vars
+    7:28  warning  'Mail' is defined but never used                                 @typescript-eslint/no-unused-vars
+  184:18  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\CanvasSequence.tsx
+   17:11  warning  'idleTimeRef' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   18:11  warning  'isIdleRef' is assigned a value but never used       @typescript-eslint/no-unused-vars
+   19:11  warning  'lastMouseXRef' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  186:25  error    'newFrame' is never reassigned. Use 'const' instead  prefer-const
+  194:25  error    'newFrame' is never reassigned. Use 'const' instead  prefer-const
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\NeuralClusters.tsx
+   79:29  error    Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\NeuralClusters.tsx:79:29
+  77 |
+  78 |     const angle = useRef(baseAngle);
+> 79 |     const breathPh = useRef(Math.random() * Math.PI * 2);
+     |                             ^^^^^^^^^^^^^ Cannot call impure function
+  80 |     const spawned = useRef(false);
+  81 |
+  82 |     // Entry animation: fly in from random far point  react-hooks/purity
+  106:8   warning  React Hook useEffect has missing dependencies: 'baseAngle', 'isCore', 'radius', and 'spawnDelay'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+  123:42  error    Error: This value cannot be modified
+
+Modifying a value returned from 'useContext()' is not allowed..
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\NeuralClusters.tsx:123:42
+  121 |
+  122 |         // Register world position for connection lines
+> 123 |         if (!nodeWorldPos.current[name]) nodeWorldPos.current[name] = new THREE.Vector3();
+      |                                          ^^^^^^^^^^^^^^^^^^^^ `nodeWorldPos` cannot be modified
+  124 |         mesh.current.getWorldPosition(nodeWorldPos.current[name]);
+  125 |
+  126 |         // Scale & emissive                                                                                                                                react-hooks/immutability
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\RadialOrbitalTimeline.tsx
+    3:38  warning  'useRef' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+   22:29  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-explicit-any
+  144:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+D:\Desktop\Storytelling-Portfolio\portfolio\src\components\RadialOrbitalTimeline.tsx:144:9
+  142 |
+  143 |     useEffect(() => {
+> 144 |         setIsMounted(true);
+      |         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  145 |         if (typeof window !== 'undefined') {
+  146 |             setViewportSize({ w: window.innerWidth, h: window.innerHeight });
+  147 |             const handleResize = () => setViewportSize({ w: window.innerWidth, h: window.innerHeight });  react-hooks/set-state-in-effect
+  192:13  error    'absoluteLeft' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              prefer-const
+  193:13  error    'absoluteTop' is never reassigned. Use 'const' instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               prefer-const
+  337:31  warning  'isHovered' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  341:31  warning  'pos' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             @typescript-eslint/no-unused-vars
+
+Γ£û 19 problems (9 errors, 10 warnings)
+  4 errors and 0 warnings potentially fixable with the `--fix` option.
+

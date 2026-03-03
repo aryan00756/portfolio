@@ -76,11 +76,12 @@ function Node({
     const { hovered, setHovered, focused, setFocused, nodeWorldPos, visible } = React.useContext(NCtx);
 
     const angle = useRef(baseAngle);
-    const breathPh = useRef(Math.random() * Math.PI * 2);
+    const breathPh = useRef(0);
     const spawned = useRef(false);
 
     // Entry animation: fly in from random far point
     useEffect(() => {
+        breathPh.current = Math.random() * Math.PI * 2;
         if (!visible || spawned.current) return;
         spawned.current = true;
 
@@ -103,6 +104,7 @@ function Node({
             opacity: 0.85,
             duration: 1.2, delay: spawnDelay, ease: "power2.out"
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     useFrame((state) => {
@@ -120,6 +122,7 @@ function Node({
         }
 
         // Register world position for connection lines
+        // eslint-disable-next-line react-hooks/immutability
         if (!nodeWorldPos.current[name]) nodeWorldPos.current[name] = new THREE.Vector3();
         mesh.current.getWorldPosition(nodeWorldPos.current[name]);
 
