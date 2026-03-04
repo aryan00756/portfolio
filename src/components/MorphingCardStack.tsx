@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, PanInfo, useInView } from 'framer-motion';
-import { Eye, Mic, FileSearch, Activity, Brain, Layers, Grid, List, ExternalLink } from 'lucide-react';
+import { Eye, Activity, Brain, Layers, Grid, List, ExternalLink } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import CardStack, { type CardStackItem } from './CardStack';
@@ -17,47 +17,47 @@ function cn(...inputs: ClassValue[]) {
 const CARDS = [
     {
         id: "1",
-        title: "Vision Transformer (ViT) Explorer",
-        description: "Real-time object detection and segmentation pipeline utilizing optimized Vision Transformers.",
-        icon: Eye,
-        tags: ["PyTorch", "OpenCV", "React"],
-        link: "https://github.com",
+        title: "Customer Churn Prediction (ANN)",
+        description: "Predicts customer churn using an Artificial Neural Network built with TensorFlow/Keras, deployed as an interactive Streamlit web app.",
+        icon: Brain,
+        tags: ["TensorFlow", "Keras", "Streamlit"],
+        link: "https://github.com/aryan00756/ANN-Chrun-Project",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
         id: "2",
-        title: "Neural Voice Synthesizer",
-        description: "Zero-shot voice cloning capabilities leveraging autoregressive transformers and diffusion models.",
-        icon: Mic,
-        tags: ["FastAPI", "CUDA", "Python"],
-        link: "https://github.com",
+        title: "IMDB Sentiment Classifier (RNN)",
+        description: "Binary sentiment classification on IMDB movie reviews using a Recurrent Neural Network with embedding and SimpleRNN layers.",
+        icon: Activity,
+        tags: ["TensorFlow", "Keras", "Scikit-Learn"],
+        link: "https://github.com/aryan00756/IMDB-Sentiment-Classification-using-Recurrent-Neural-Networks",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
         id: "3",
-        title: "GenAI Document Intelligence",
-        description: "Intelligent document parsing and question answering using large language models and RAG pipeline.",
-        icon: FileSearch,
-        tags: ["LangChain", "OpenAI", "FastAPI"],
-        link: "https://github.com",
+        title: "Trader Profitability Predictor",
+        description: "Neural network model predicting trader profitability based on trade frequency, size, and market sentiment, deployed via Streamlit.",
+        icon: Layers,
+        tags: ["TensorFlow", "Streamlit", "Pandas"],
+        link: "https://github.com/aryan00756/trader-profit-prediction",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
         id: "4",
-        title: "Real-Time Pose Estimator",
-        description: "Human pose estimation and gesture recognition using MediaPipe and CVZone with 30fps performance.",
-        icon: Activity,
-        tags: ["MediaPipe", "CVZone", "Python"],
-        link: "https://github.com",
+        title: "Pose-Based Movement Analysis",
+        description: "Cricket player movement analysis using MediaPipe Pose estimation — tracks hip, knee and ankle keypoints to compute knee angle metrics.",
+        icon: Eye,
+        tags: ["MediaPipe", "OpenCV", "Python"],
+        link: "https://github.com/aryan00756/-pose-based-movement-analysis",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
         id: "5",
-        title: "Sentiment Analysis Engine",
-        description: "Multi-class sentiment classification on social media data using fine-tuned BERT and LSTM models.",
-        icon: Brain,
-        tags: ["BERT", "LSTM", "Scikit-Learn"],
-        link: "https://github.com",
+        title: "YOLO Object Detection Lab",
+        description: "Hands-on exploration of YOLO (You Only Look Once) for real-time object detection with custom weights and training pipelines.",
+        icon: Grid,
+        tags: ["YOLO", "OpenCV", "Python"],
+        link: "https://github.com/aryan00756/YOLO-Learning",
         linkLabel: "ACCESS REPOSITORY ↗"
     }
 ];
