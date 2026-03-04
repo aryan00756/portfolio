@@ -203,12 +203,7 @@ export default function CanvasSequence({ mouseX, mouseY, isMobile = false }: Can
     const mX = mouseX || motionValue(0);
     const mY = mouseY || motionValue(0);
 
-    // Layer 1: Portrait Canvas (Moves in same direction, tilts slightly)
-    const portraitX = useTransform(mX, (v) => isMobile ? 0 : v * 18);
-    const portraitY = useTransform(mY, (v) => isMobile ? 0 : v * 12);
-
-    const rotateY = useTransform(mX, (v) => isMobile ? 0 : v * 6); // Tilt left/right
-    const rotateX = useTransform(mY, (v) => isMobile ? 0 : v * -4); // Tilt up/down (inverted)
+    // Layer 1: Portrait Canvas (Parallax removed per user request)
 
     // Layer 2: Vignette Glow (Moves in same direction, slightly faster)
     const glowX = useTransform(mX, (v) => isMobile ? 0 : v * 25);
@@ -276,13 +271,6 @@ export default function CanvasSequence({ mouseX, mouseY, isMobile = false }: Can
                 <motion.div
                     className="absolute inset-0 w-full h-full flex items-center justify-center transition-all duration-500"
                     style={{
-                        x: portraitX,
-                        y: portraitY,
-                        rotateX,
-                        rotateY,
-                        transformStyle: "preserve-3d",
-                        perspective: "1000px",
-                        transformOrigin: "center center",
                         filter: isComic ? "grayscale(100%) contrast(200%)" : "none"
                     }}
                 >
