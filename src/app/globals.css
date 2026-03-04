@@ -33,3 +33,8 @@ body.custom-cursor-enabled,
 body.custom-cursor-enabled * {
   cursor: none !important;
 }
+
+/* Prevent FOUC of the loading screen on subsequent visits */
+html.skip-loading .loading-screen-container {
+  display: none !important;
+}

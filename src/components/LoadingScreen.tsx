@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function LoadingScreen() {
@@ -17,6 +17,8 @@ export function LoadingScreen() {
     // 4: Fade out content (2.8s-3.2s)
     // 5: Slide up & Unmount (3.2s)
 
+    const timersRef = useRef<NodeJS.Timeout[]>([]);
+
     // Initialization & Session Storage Check
     useEffect(() => {
         setIsClient(true);
@@ -25,23 +27,20 @@ export function LoadingScreen() {
             setIsVisible(false); // Skip immediately
         } else {
             // Start timeline
-            const t1 = setTimeout(() => setSeqPhase(1), 0);
-            const t2 = setTimeout(() => setSeqPhase(2), 500);
-            const tSkip = setTimeout(() => setShowSkip(true), 1000); // Show skip after 1s
-            const t3 = setTimeout(() => setSeqPhase(3), 1800);
-            const t4 = setTimeout(() => setSeqPhase(4), 2800);
-            const t5 = setTimeout(() => {
-                setSeqPhase(5);
-                completeLoading();
-            }, 3200);
+            timersRef.current = [
+                setTimeout(() => setSeqPhase(1), 0),
+                setTimeout(() => setSeqPhase(2), 500),
+                setTimeout(() => setShowSkip(true), 1000), // Show skip after 1s
+                setTimeout(() => setSeqPhase(3), 1800),
+                setTimeout(() => setSeqPhase(4), 2800),
+                setTimeout(() => {
+                    setSeqPhase(5);
+                    completeLoading();
+                }, 3200)
+            ];
 
             return () => {
-                clearTimeout(t1);
-                clearTimeout(t2);
-                clearTimeout(tSkip);
-                clearTimeout(t3);
-                clearTimeout(t4);
-                clearTimeout(t5);
+                timersRef.current.forEach(clearTimeout);
             };
         }
     }, []);
@@ -52,12 +51,10 @@ export function LoadingScreen() {
     };
 
     const handleSkip = () => {
-        // Jump straight to slide up phase
+        timersRef.current.forEach(clearTimeout);
         setSeqPhase(5);
         completeLoading();
     };
-
-    if (!isClient) return null; // Avoid hydration mismatch
 
     return (
         <AnimatePresence>
@@ -67,7 +64,7 @@ export function LoadingScreen() {
                     initial={{ y: 0 }}
                     exit={{ y: "-100vh" }}
                     transition={{ duration: 0.5, ease: "easeInOut" }}
-                    className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050508] overflow-hidden"
+                    className="loading-screen-container fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050508] overflow-hidden"
                 >
                     {/* Brief Flash at 2.8s */}
                     <motion.div
@@ -100,26 +97,26 @@ export function LoadingScreen() {
                                 <>
                                     <TypewriterText
                                         text="> INITIALIZING NEURAL INTERFACE..."
-                                        speed={30}
+                                        speed={15}
                                         className="text-[#FF4500]"
                                         delay={0}
                                     />
                                     <TypewriterText
                                         text="> LOADING ARYAN YADAV.EXE"
-                                        speed={25}
+                                        speed={15}
                                         className="text-white/70"
-                                        delay={960} // Waits for line 1 (~32 * 30ms = 960ms)
+                                        delay={480} // Waits for line 1 (~32 * 15ms = 480ms)
                                     />
 
                                     {/* Line 3 */}
                                     <div className="flex justify-between w-full h-4 mt-1">
                                         <TypewriterText
                                             text="> ML SYSTEMS............"
-                                            speed={25}
+                                            speed={15}
                                             className="text-[#00BFFF]"
-                                            delay={1585} // Line 1 (960) + Line 2 (625) = 1585
+                                            delay={855} // Line 1 (480) + Line 2 (375) = 855
                                         />
-                                        <DelayedShow delay={2185}>
+                                        <DelayedShow delay={1215}>
                                             <span className="text-green-500 whitespace-nowrap">ONLINE ✓</span>
                                         </DelayedShow>
                                     </div>
@@ -128,11 +125,11 @@ export function LoadingScreen() {
                                     <div className="flex justify-between w-full h-4">
                                         <TypewriterText
                                             text="> COMPUTER VISION......."
-                                            speed={25}
+                                            speed={15}
                                             className="text-[#00BFFF]"
-                                            delay={2185} // Previous + Line 3 dots (600) = 2185
+                                            delay={1215} // Previous + Line 3 dots (360) = 1215
                                         />
-                                        <DelayedShow delay={2785}>
+                                        <DelayedShow delay={1575}>
                                             <span className="text-green-500 whitespace-nowrap">ONLINE ✓</span>
                                         </DelayedShow>
                                     </div>
@@ -141,11 +138,11 @@ export function LoadingScreen() {
                                     <div className="flex justify-between w-full h-4">
                                         <TypewriterText
                                             text="> GENAI ENGINE.........."
-                                            speed={25}
+                                            speed={15}
                                             className="text-[#00BFFF]"
-                                            delay={2785} // Previous + Line 4 dots (600) = 2785
+                                            delay={1575} // Previous + Line 4 dots (360) = 1575
                                         />
-                                        <DelayedShow delay={3385}>
+                                        <DelayedShow delay={1935}>
                                             <span className="text-green-500 whitespace-nowrap">ONLINE ✓</span>
                                         </DelayedShow>
                                     </div>

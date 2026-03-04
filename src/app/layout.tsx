@@ -27,6 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (sessionStorage.getItem('loaded') === 'true') {
+                  document.documentElement.classList.add('skip-loading');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#050508] text-white font-sans`}
       >
