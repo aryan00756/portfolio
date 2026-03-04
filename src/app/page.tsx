@@ -7,6 +7,7 @@ import NeuralClusters from "@/components/NeuralClusters";
 import RadialOrbitalTimeline from "@/components/RadialOrbitalTimeline";
 import MorphingCardStack from "@/components/MorphingCardStack";
 import { FloatingResumeButton } from "@/components/FloatingResumeButton";
+import { LoadingScreen } from "@/components/LoadingScreen";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -77,6 +78,10 @@ export default function Home() {
 
   return (
     <main className="relative w-full h-full min-h-screen font-sans selection:bg-[#FF4500]/50 text-white overflow-hidden">
+
+      {/* INITIALIZATION LOADING SCREEN */}
+      <LoadingScreen />
+
       {/* Background Canvas Layer (Passes mouse values down for Portrait Layer 1 & Glow Layer 2 parallax) */}
       <CanvasSequence mouseX={springX} mouseY={springY} isMobile={isMobile} />
 
