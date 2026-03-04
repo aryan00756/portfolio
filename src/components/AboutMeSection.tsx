@@ -72,17 +72,7 @@ export default function AboutMeSection() {
     }, []);
 
     return (
-        <section className="min-h-screen w-full relative flex flex-col justify-center py-20 overflow-hidden bg-[#050508]">
-            {/* Background Portrait Fade */}
-            <div className="absolute inset-0 z-0 pointer-events-none opacity-20 flex items-center justify-center">
-                <img
-                    src="/sequence/frame_118_delay-0.05s.webp"
-                    alt="Aryan Background"
-                    className="w-full h-full object-cover"
-                />
-            </div>
-            {/* Dark Overlay over Portrait */}
-            <div className="absolute inset-0 z-0 bg-black/80 pointer-events-none" />
+        <section className="min-h-screen w-full relative flex flex-col justify-center py-20 overflow-hidden bg-transparent">
 
             <div className="max-w-7xl mx-auto px-6 md:px-12 w-full relative z-10 flex flex-col h-full items-center justify-center mt-12 md:mt-20">
 

@@ -130,26 +130,8 @@ export default function Home() {
           </motion.div>
         </section>
         {/* NEW ABOUT ME SECTION */}
-        <section className="bg-[#050508] -mt-px w-full relative z-20">
+        <section className="bg-transparent -mt-px w-full relative z-20">
           <AboutMeSection />
-        </section>
-
-        {/* NEURAL CLUSTERS INTRO */}
-        <section className="h-[100vh] flex items-center px-8 md:px-24">
-          <motion.div
-            whileInView={{ opacity: 1, x: 0 }}
-            initial={{ opacity: 0, x: -50 }}
-            transition={{ duration: 1 }}
-            viewport={{ once: true, margin: "-20%" }}
-            className="max-w-2xl bg-black/30 p-8 rounded-2xl backdrop-blur-sm border border-white/5"
-          >
-            <h2 className="font-display text-3xl md:text-5xl font-bold mb-6 text-[#00BFFF]">
-              SYSTEM <span className="text-white">OVERRIDE.</span>
-            </h2>
-            <p className="text-lg md:text-xl leading-relaxed text-gray-300 font-light">
-              AI engineer working across Machine Learning, Deep Learning, Computer Vision, and Generative AI, focused on building end-to-end intelligent systems. I design, train, and optimize models, then integrate them into scalable full-stack applications built for real-world deployment.
-            </p>
-          </motion.div>
         </section>
 
         {/* SKILLS SECTION */}
