@@ -6,6 +6,7 @@ import ScrollingCaptions from "@/components/hero/ScrollingCaptions";
 import NeuralClusters from "@/components/NeuralClusters";
 import RadialOrbitalTimeline from "@/components/RadialOrbitalTimeline";
 import MorphingCardStack from "@/components/MorphingCardStack";
+import { FloatingResumeButton } from "@/components/FloatingResumeButton";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -90,6 +91,9 @@ export default function Home() {
       {/* DOM Content Layer over Canvas */}
       <div className="relative z-10">
 
+        {/* GLOBAL FLOATING RESUME BUTTON */}
+        <FloatingResumeButton />
+
         {/* HERO SECTION */}
         <section
           className="h-[120vh] flex flex-col items-center justify-center relative"
@@ -116,6 +120,32 @@ export default function Home() {
 
             {/* Injects the scroll-listener captions with dynamic mouse mapping */}
             <ScrollingCaptions mouseX={captionX} mouseY={captionY} />
+
+            {/* HERO INLINE RESUME BUTTON */}
+            <motion.div
+              style={{ x: seqX, y: seqY }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, delay: 1.2, ease: "easeOut" }}
+              className="mt-12 md:mt-16 w-full flex justify-center px-4"
+            >
+              <a
+                href="/resume/aryan-yadav-resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="
+                  group relative flex items-center justify-center
+                  w-full md:w-auto min-h-[44px] px-6 py-2.5
+                  border border-white/20 bg-white/[0.04] rounded-lg
+                  font-mono text-[0.75rem] tracking-[0.2em] text-white/70
+                  transition-all duration-300 ease-out
+                  hover:border-[#FF4500] hover:text-white hover:bg-[#FF4500]/[0.08] hover:shadow-[0_0_20px_rgba(255,69,0,0.2)]
+                "
+              >
+                [ DOWNLOAD RESUME ] &darr;
+              </a>
+            </motion.div>
 
           </motion.div>
 
