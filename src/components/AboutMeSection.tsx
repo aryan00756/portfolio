@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
-import { Code, Cpu, GitBranch, GraduationCap } from "lucide-react";
+import { Code, Cpu, GitBranch, GraduationCap, User } from "lucide-react";
 import { Card3D } from "./ui/Card3D";
 
 // Helper for number count-up
@@ -96,25 +96,32 @@ export default function AboutMeSection() {
                     <div className="w-full lg:w-[60%] flex flex-col justify-between">
 
                         {/* Bio Text Card */}
-                        <div className="flex flex-col gap-[20px] mb-16 bg-black p-8 rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] relative overflow-hidden group">
-                            {/* Subtle top edge highlight */}
-                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
-                            {/* Inner content */}
-                            <div className="relative z-10 flex flex-col gap-[20px]">
-                                {BIO_PARAGRAPHS.map((text, i) => (
-                                    <motion.p
-                                        key={i}
-                                        initial={{ opacity: 0, x: -30 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true, margin: "-10%" }}
-                                        transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
-                                        className="font-sans text-[clamp(0.9rem,1.5vw,1.05rem)] leading-[1.8] text-white/90"
-                                    >
-                                        {text}
-                                    </motion.p>
-                                ))}
-                            </div>
-                        </div>
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true, margin: "-10%" }}
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="mb-16"
+                        >
+                            <Card3D
+                                title={<></>}
+                                description={<></>}
+                                icon={User}
+                                theme="orange"
+                                size="lg"
+                                variant="premium"
+                                animated={false}
+                                className="!p-8 md:!p-10" // Override padding for more text space
+                            >
+                                <div className="flex flex-col gap-[20px] pointer-events-none mt-4">
+                                    {BIO_PARAGRAPHS.map((text, i) => (
+                                        <p key={i} className="font-sans text-[clamp(0.9rem,1.5vw,1.05rem)] leading-[1.8] text-white/90">
+                                            {text}
+                                        </p>
+                                    ))}
+                                </div>
+                            </Card3D>
+                        </motion.div>
 
                         {/* Timeline */}
                         <motion.div
