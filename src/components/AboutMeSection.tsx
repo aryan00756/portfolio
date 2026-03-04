@@ -95,20 +95,25 @@ export default function AboutMeSection() {
                     {/* LEFT COLUMN: Bio & Timeline */}
                     <div className="w-full lg:w-[60%] flex flex-col justify-between">
 
-                        {/* Bio Text */}
-                        <div className="flex flex-col gap-[20px] mb-16">
-                            {BIO_PARAGRAPHS.map((text, i) => (
-                                <motion.p
-                                    key={i}
-                                    initial={{ opacity: 0, x: -30 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true, margin: "-10%" }}
-                                    transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
-                                    className="font-sans text-[clamp(0.9rem,1.5vw,1.05rem)] leading-[1.8] text-white/75"
-                                >
-                                    {text}
-                                </motion.p>
-                            ))}
+                        {/* Bio Text Card */}
+                        <div className="flex flex-col gap-[20px] mb-16 bg-black p-8 rounded-2xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] relative overflow-hidden group">
+                            {/* Subtle top edge highlight */}
+                            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
+                            {/* Inner content */}
+                            <div className="relative z-10 flex flex-col gap-[20px]">
+                                {BIO_PARAGRAPHS.map((text, i) => (
+                                    <motion.p
+                                        key={i}
+                                        initial={{ opacity: 0, x: -30 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true, margin: "-10%" }}
+                                        transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
+                                        className="font-sans text-[clamp(0.9rem,1.5vw,1.05rem)] leading-[1.8] text-white/90"
+                                    >
+                                        {text}
+                                    </motion.p>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Timeline */}
