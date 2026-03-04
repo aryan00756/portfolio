@@ -35,11 +35,7 @@ export default function CanvasSequence({ mouseX, mouseY, isMobile = false }: Can
                 loadedCount++;
                 setLoadingProgress((loadedCount / FRAME_COUNT) * 100);
                 if (loadedCount === FRAME_COUNT) {
-                    const elapsed = Date.now() - startTime;
-                    const remainingTime = Math.max(0, 3500 - elapsed);
-                    setTimeout(() => {
-                        setLoaded(true);
-                    }, remainingTime);
+                    setLoaded(true);
                 }
             };
             frames.push(img);
@@ -248,24 +244,6 @@ export default function CanvasSequence({ mouseX, mouseY, isMobile = false }: Can
 
     return (
         <>
-            <AnimatePresence>
-                {!loaded && (
-                    <motion.div
-                        initial={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
-                        className="fixed inset-0 flex flex-col items-center justify-center bg-[#050508] text-[#FF4500] z-[100] font-mono tracking-widest gap-4 pointer-events-auto"
-                    >
-                        <div className="text-xl text-center px-4">INITIALIZING NEURAL LINK...</div>
-                        <div className="w-64 h-1 bg-[#050508] border border-[#00BFFF]/30 rounded overflow-hidden">
-                            <div
-                                className="h-full bg-[#FF4500] shadow-[0_0_10px_#FF4500] transition-all duration-[3000ms] ease-out"
-                                style={{ width: `${loadingProgress}%` }}
-                            />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             <div className="fixed inset-0 z-0 pointer-events-none bg-[#050508] overflow-hidden">
                 <motion.div
