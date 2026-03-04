@@ -1,14 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionValue, useTransform, motionValue } from "framer-motion";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 const FRAME_COUNT = 119;
 // Using image path structure frame_000_delay-0.05s.webp -> frame_118_delay-0.05s.webp
 
-export default function CanvasSequence() {
+interface CanvasSequenceProps {
+    mouseX?: MotionValue<number>;
+    mouseY?: MotionValue<number>;
+    isMobile?: boolean;
+}
+
+export default function CanvasSequence({ mouseX, mouseY, isMobile = false }: CanvasSequenceProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [loaded, setLoaded] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState(0);
@@ -190,6 +196,30 @@ export default function CanvasSequence() {
         }
     }, [loaded]);
 
+    // --------------------------------------------------------
+    // LAYER PARALLAX MAPPINGS (Mobile receives static values)
+    // --------------------------------------------------------
+    // Ensure mouse props exist, otherwise default bounds to 0
+    const mX = mouseX || motionValue(0);
+    const mY = mouseY || motionValue(0);
+
+    // Layer 1: Portrait Canvas (Moves in same direction, tilts slightly)
+    const portraitX = useTransform(mX, (v) => isMobile ? 0 : v * 18);
+    const portraitY = useTransform(mY, (v) => isMobile ? 0 : v * 12);
+
+    const rotateY = useTransform(mX, (v) => isMobile ? 0 : v * 6); // Tilt left/right
+    const rotateX = useTransform(mY, (v) => isMobile ? 0 : v * -4); // Tilt up/down (inverted)
+
+    // Layer 2: Vignette Glow (Moves in same direction, slightly faster)
+    const glowX = useTransform(mX, (v) => isMobile ? 0 : v * 25);
+    const glowY = useTransform(mY, (v) => isMobile ? 0 : v * 15);
+
+    // Dynamic Opacity Shifts based on Mouse X
+    // Orange is on the left; when mouse moves right (v > 0), orange on the left gets stronger
+    const orangeOpacity = useTransform(mX, [-0.5, 0, 0.5], [0.1, 0.3, 0.7]);
+    // Blue is on the right; when mouse moves left (v < 0), blue on the right gets stronger
+    const blueOpacity = useTransform(mX, [-0.5, 0, 0.5], [0.7, 0.3, 0.1]);
+
     return (
         <>
             <AnimatePresence>
@@ -211,15 +241,46 @@ export default function CanvasSequence() {
                 )}
             </AnimatePresence>
 
-            <div className="fixed inset-0 z-0 pointer-events-none bg-[#050508]">
-                <canvas
-                    ref={canvasRef}
-                    className={`w-full h-full object-cover transition-opacity duration-[2000ms] ${loaded ? "opacity-60" : "opacity-0"
-                        }`}
+            <div className="fixed inset-0 z-0 pointer-events-none bg-[#050508] overflow-hidden">
+                <motion.div
+                    className="absolute inset-0 w-full h-full flex items-center justify-center"
                     style={{
-                        filter: "drop-shadow(0 0 25px rgba(255, 69, 0, 0.15)) drop-shadow(0 0 25px rgba(0, 191, 255, 0.15))",
+                        x: portraitX,
+                        y: portraitY,
+                        rotateX,
+                        rotateY,
+                        transformStyle: "preserve-3d",
+                        perspective: "1000px",
+                        transformOrigin: "center center"
                     }}
-                />
+                >
+                    <canvas
+                        ref={canvasRef}
+                        className={`w-full h-full object-cover transition-opacity duration-[2000ms] ${loaded ? "opacity-60" : "opacity-0"}`}
+                        style={{
+                            filter: "drop-shadow(0 0 25px rgba(255, 69, 0, 0.15)) drop-shadow(0 0 25px rgba(0, 191, 255, 0.15))",
+                        }}
+                    />
+                </motion.div>
+
+                {/* Layer 2: Parallax Lighting Glow */}
+                <motion.div
+                    className="absolute inset-0 pointer-events-none mix-blend-screen"
+                    style={{ x: glowX, y: glowY }}
+                >
+                    {/* Left Orange Glow */}
+                    <motion.div
+                        className="absolute left-[-10%] top-0 w-[40%] h-full bg-[radial-gradient(circle_at_left,rgba(255,69,0,0.8)_0%,transparent_70%)]"
+                        style={{ opacity: isMobile ? 0.3 : orangeOpacity }}
+                        transition={{ ease: "easeOut", duration: 0.5 }}
+                    />
+                    {/* Right Blue Glow */}
+                    <motion.div
+                        className="absolute right-[-10%] top-0 w-[40%] h-full bg-[radial-gradient(circle_at_right,rgba(0,191,255,0.8)_0%,transparent_70%)]"
+                        style={{ opacity: isMobile ? 0.3 : blueOpacity }}
+                        transition={{ ease: "easeOut", duration: 0.5 }}
+                    />
+                </motion.div>
 
                 {/* Vignette / Dark gradient overlay to ensure text is legible */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050508] via-transparent to-[#050508]/60 mix-blend-multiply" />
