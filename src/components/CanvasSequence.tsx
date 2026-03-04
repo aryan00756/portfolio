@@ -14,7 +14,6 @@ export default function CanvasSequence() {
     const [loadingProgress, setLoadingProgress] = useState(0);
     const framesRef = useRef<HTMLImageElement[]>([]);
     const currentFrameRef = useRef(0);
-    const requestRef = useRef<number>(0);
 
     // Preloading frames
     useEffect(() => {
@@ -97,36 +96,7 @@ export default function CanvasSequence() {
         const state = {
             direction: 1,      // 1 = forward, -1 = reverse
             isReversing: false,
-            idleTimer: 0,
         };
-
-        // Idle Ping-Pong loop
-        const tick = () => {
-            if (!state.isReversing) {
-                state.idleTimer++;
-
-                // Enter idle state after ~1s of scroll inactivity
-                if (state.idleTimer > 60) {
-                    // Play forward roughly 20fps
-                    if (state.idleTimer % 3 === 0) {
-                        currentFrameRef.current += state.direction;
-
-                        // Ping-pong behavior
-                        if (currentFrameRef.current >= FRAME_COUNT - 1) {
-                            currentFrameRef.current = FRAME_COUNT - 1;
-                            state.direction = -1;
-                        } else if (currentFrameRef.current <= 0) {
-                            currentFrameRef.current = 0;
-                            state.direction = 1;
-                        }
-
-                        render();
-                    }
-                }
-            }
-            requestRef.current = requestAnimationFrame(tick);
-        };
-        requestRef.current = requestAnimationFrame(tick);
 
         // Scroll mapping
         let lastProgress = 0;
@@ -138,7 +108,6 @@ export default function CanvasSequence() {
             scrub: 0,
             onUpdate: (self) => {
                 const progress = self.progress;
-                state.idleTimer = 0; // Reset idle timer on scroll
 
                 if (state.isReversing) return; // Prevent scroll updates during cinematic reverse
 
@@ -205,7 +174,6 @@ export default function CanvasSequence() {
 
         return () => {
             window.removeEventListener("resize", handleResize);
-            cancelAnimationFrame(requestRef.current);
             scrollTrigger.kill();
         };
     }, [loaded]);
