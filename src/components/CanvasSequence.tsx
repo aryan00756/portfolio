@@ -249,15 +249,19 @@ export default function CanvasSequence({ isMobile = false }: CanvasSequenceProps
                 <div className="absolute inset-0 pointer-events-none mix-blend-screen">
                     {/* Left Orange Glow */}
                     <motion.div
-                        className="absolute left-[-10%] top-0 w-[40%] h-full bg-[radial-gradient(circle_at_left,rgba(255,69,0,0.8)_0%,transparent_70%)]"
-                        style={{ opacity: isMobile ? 0.3 : 0.4 }}
-                        transition={{ ease: "easeOut", duration: 0.5 }}
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                            background: "radial-gradient(ellipse 80% 60% at 0% 50%, rgba(255,69,0,0.8) 0%, transparent 100%)",
+                            opacity: isMobile ? 0.3 : 0.4
+                        }}
                     />
                     {/* Right Blue Glow */}
                     <motion.div
-                        className="absolute right-[-10%] top-0 w-[40%] h-full bg-[radial-gradient(circle_at_right,rgba(0,191,255,0.8)_0%,transparent_70%)]"
-                        style={{ opacity: isMobile ? 0.3 : 0.4 }}
-                        transition={{ ease: "easeOut", duration: 0.5 }}
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                            background: "radial-gradient(ellipse 80% 60% at 100% 50%, rgba(0,191,255,0.8) 0%, transparent 100%)",
+                            opacity: isMobile ? 0.3 : 0.4
+                        }}
                     />
                 </div>
 
