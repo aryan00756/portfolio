@@ -18,13 +18,13 @@ gsap.registerPlugin(ScrollTrigger);
 const CLUSTERS = [
     {
         id: "web", coreName: "Code", color: "#00BFFF",
-        position: [-4.5, 1.5, -1] as [number, number, number],
+        position: [-4.5, 1.5, 0] as [number, number, number],
         children: ["Java", "HTML", "CSS", "JavaScript", "SQL"],
         desc: "Languages bridging logic and the web."
     },
     {
         id: "vision", coreName: "Vision", color: "#FF6600",
-        position: [4, 2.5, -1] as [number, number, number],
+        position: [4, 2.5, 0] as [number, number, number],
         children: ["OpenCV", "YOLO", "MediaPipe", "CVZone"],
         desc: "Teaching machines to see."
     },
@@ -42,7 +42,7 @@ const CLUSTERS = [
     },
     {
         id: "devops", coreName: "DevOps", color: "#39FF14",
-        position: [4, -2.5, -1] as [number, number, number],
+        position: [4, -2.5, 0] as [number, number, number],
         children: ["Streamlit", "Git", "GitHub"],
         desc: "Shipping intelligence to the world."
     }
@@ -171,9 +171,12 @@ function Node({
         mat.current.emissiveIntensity = THREE.MathUtils.lerp(
             mat.current.emissiveIntensity, isHov ? 3 : 1, 0.1
         );
-        mat.current.opacity = THREE.MathUtils.lerp(
-            mat.current.opacity, isOtherFoc ? 0.08 : 0.85, 0.08
-        );
+        // Only lerp opacity AFTER spawn animation completes — otherwise useFrame fights GSAP
+        if (spawnComplete.current) {
+            mat.current.opacity = THREE.MathUtils.lerp(
+                mat.current.opacity, isOtherFoc ? 0.08 : 0.85, 0.08
+            );
+        }
     });
 
     const clusterLabel = CLUSTERS.find(c => c.id === clusterId)?.coreName ?? "";
@@ -295,6 +298,9 @@ function CrossLines() {
     const lineObjects = useRef<THREE.Line[]>([]);
     const dotObjects = useRef<THREE.Mesh[]>([]);
 
+    // No-op raycast to prevent lines/dots from intercepting pointer events on nodes
+    const noopRaycast = () => { };
+
     // Create primitives once
     const { lines, dots } = React.useMemo(() => {
         const lines = CROSS_LINES.map(() => {
@@ -303,12 +309,16 @@ function CrossLines() {
             const pos = new Float32Array(6);
             geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
             const mat = new THREE.LineBasicMaterial({ color: "#aaaaff", transparent: true, opacity: 0.14 });
-            return new THREE.Line(geo, mat);
+            const line = new THREE.Line(geo, mat);
+            line.raycast = () => { };  // Disable raycasting — lines must not block node hover
+            return line;
         });
         const dots = CROSS_LINES.map(() => {
             const geo = new THREE.SphereGeometry(0.07, 8, 8);
             const mat = new THREE.MeshBasicMaterial({ color: "#00CFFF", transparent: true, opacity: 0.35 });
-            return new THREE.Mesh(geo, mat);
+            const dot = new THREE.Mesh(geo, mat);
+            dot.raycast = () => { };  // Disable raycasting — dots must not block node hover
+            return dot;
         });
         return { lines, dots };
     }, []);
