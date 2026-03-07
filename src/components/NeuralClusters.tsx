@@ -62,6 +62,8 @@ interface NeuralCtx {
     focused: string | null;
     setFocused: (c: string | null) => void;
     nodeWorldPos: React.MutableRefObject<Record<string, THREE.Vector3>>;
+    mouseLerped: React.MutableRefObject<THREE.Vector2>;
+    isTouch: boolean;
     visible: boolean;
 }
 
@@ -70,38 +72,46 @@ const NCtx = React.createContext<NeuralCtx>(null!);
 // ─── NODE ────────────────────────────────────────────────────────────────────
 
 function Node({
-    name, isCore, color, clusterId, radius, baseAngle, orbitSpeed, spawnDelay
+    name, isCore, color, clusterId, radius, baseAngle, orbitSpeed, spawnDelay, depthGroup
 }: {
     name: string; isCore: boolean; color: string; clusterId: string;
     radius: number; baseAngle: number; orbitSpeed: number; spawnDelay: number;
+    depthGroup: 'A' | 'B' | 'C';
 }) {
     const mesh = useRef<THREE.Mesh>(null!);
     const mat = useRef<THREE.MeshStandardMaterial>(null!);
-    const { hovered, setHovered, focused, setFocused, nodeWorldPos, visible } = React.useContext(NCtx);
+    const { hovered, setHovered, focused, setFocused, nodeWorldPos, mouseLerped, isTouch, visible } = React.useContext(NCtx);
 
     const angle = useRef(baseAngle);
     const breathPh = useRef(0);
     const spawned = useRef(false);
+    const spawnComplete = useRef(false);
 
-    // Entry animation: fly in from random far point
+    // Entry animation: fly in from specific depth group
     useEffect(() => {
         breathPh.current = Math.random() * Math.PI * 2;
         if (!visible || spawned.current) return;
         spawned.current = true;
 
-        const start = new THREE.Vector3(
-            (Math.random() - 0.5) * 80,
-            (Math.random() - 0.5) * 80,
-            (Math.random() - 0.5) * 80
-        );
+        const startZ = depthGroup === 'A' ? -4 : depthGroup === 'B' ? -2 : -6;
+        const startScale = depthGroup === 'A' ? 0.3 : depthGroup === 'B' ? 0.6 : 0.1;
+
         const target = isCore
             ? new THREE.Vector3(0, 0, 0)
             : new THREE.Vector3(Math.cos(baseAngle) * radius, 0, Math.sin(baseAngle) * radius);
 
-        mesh.current.position.copy(start);
+        mesh.current.position.copy(target).setZ(target.z + startZ);
+        mesh.current.scale.set(startScale, startScale, startScale);
 
         gsap.to(mesh.current.position, {
             x: target.x, y: target.y, z: target.z,
+            duration: 1.2, delay: spawnDelay, ease: "expo.out",
+            onComplete: () => {
+                spawnComplete.current = true;
+            }
+        });
+        gsap.to(mesh.current.scale, {
+            x: isCore ? 1.1 : 1.0, y: isCore ? 1.1 : 1.0, z: isCore ? 1.1 : 1.0,
             duration: 1.2, delay: spawnDelay, ease: "expo.out"
         });
         gsap.to(mat.current, {
@@ -116,13 +126,28 @@ function Node({
 
         const t = state.clock.elapsedTime;
 
-        // Orbit & breathe only after entry delay
-        if (spawned.current && !focused && t > spawnDelay + 1) {
+        // Group Bobbing Modifiers
+        const bobAmp = depthGroup === 'A' ? 0.3 : depthGroup === 'B' ? 0.2 : 0.1;
+        const bobSpeed = depthGroup === 'A' ? 1.5 : depthGroup === 'B' ? 1.2 : 1.0;
+
+        // Parallax depth modifiers mapped safely to R3F units
+        const pX = depthGroup === 'A' ? 1.8 : depthGroup === 'B' ? 1.0 : 0.4;
+        const pY = depthGroup === 'A' ? 1.2 : depthGroup === 'B' ? 0.7 : 0.3;
+
+        // Orbit & breathe & parallax only after entry delay
+        if (spawnComplete.current && !focused) {
             angle.current += orbitSpeed;
-            const tx = isCore ? 0 : Math.cos(angle.current) * radius;
-            const ty = Math.sin(t * 1.5 + breathPh.current) * 0.15;
-            const tz = isCore ? 0 : Math.sin(angle.current) * radius;
-            mesh.current.position.lerp(new THREE.Vector3(tx, ty, tz), 0.08);
+            const basex = isCore ? 0 : Math.cos(angle.current) * radius;
+            const basez = isCore ? 0 : Math.sin(angle.current) * radius;
+
+            const bobY = Math.sin(t * bobSpeed + breathPh.current) * bobAmp;
+
+            // Continuous parallax displacement based on mouseLerped
+            const pxOffset = isTouch ? 0 : mouseLerped.current.x * pX;
+            const pyOffset = isTouch ? 0 : mouseLerped.current.y * pY * -1; // Invert Y for correct feel
+
+            const targetPos = new THREE.Vector3(basex + pxOffset, bobY + pyOffset, basez);
+            mesh.current.position.lerp(targetPos, 0.08); // Springly smoothing
         }
 
         // Register world position for connection lines
@@ -134,10 +159,14 @@ function Node({
         const isHov = hovered === name;
         const isOtherFoc = focused && focused !== clusterId;
         const targetScale = isHov ? (isCore ? 1.6 : 1.5) : (isCore ? 1.1 : 1.0);
-        const breathScale = isCore ? 0 : Math.sin(t * 2 + breathPh.current) * 0.07;
-        mesh.current.scale.lerp(
-            new THREE.Vector3(targetScale + breathScale, targetScale + breathScale, targetScale + breathScale), 0.1
-        );
+        const breathScale = isCore ? Math.sin(t * 2 + breathPh.current) * 0.05 : 0;
+
+        // Wait for spawn animation to finish before applying lerped scale
+        if (spawnComplete.current) {
+            mesh.current.scale.lerp(
+                new THREE.Vector3(targetScale + breathScale, targetScale + breathScale, targetScale + breathScale), 0.1
+            );
+        }
 
         mat.current.emissiveIntensity = THREE.MathUtils.lerp(
             mat.current.emissiveIntensity, isHov ? 3 : 1, 0.1
@@ -235,14 +264,21 @@ function Cluster({ data, idx }: { data: typeof CLUSTERS[0]; idx: number }) {
     return (
         <group ref={grp} position={data.position}>
             <Node name={data.coreName} isCore color={data.color} clusterId={data.id}
-                radius={0} baseAngle={0} orbitSpeed={0} spawnDelay={idx * 0.15} />
+                radius={0} baseAngle={0} orbitSpeed={0} spawnDelay={idx * 0.06 + 0.3} depthGroup="A" />
             {data.children.map((child, ci) => {
                 const r = 2.0 + (ci % 3) * 0.5;
                 const a = (ci / data.children.length) * Math.PI * 2;
                 const spd = 0.004 + (ci % 4) * 0.001 * (ci % 2 === 0 ? 1 : -1);
+
+                const isMid = ci < 3;
+                const dGroup = isMid ? "B" : "C";
+                const delay = isMid
+                    ? 0.5 + (idx * data.children.length + ci) * 0.05
+                    : 0.7 + (idx * data.children.length + ci) * 0.04;
+
                 return (
                     <Node key={child} name={child} isCore={false} color={data.color} clusterId={data.id}
-                        radius={r} baseAngle={a} orbitSpeed={spd} spawnDelay={idx * 0.15 + 0.1} />
+                        radius={r} baseAngle={a} orbitSpeed={spd} spawnDelay={delay} depthGroup={dGroup} />
                 );
             })}
         </group>
@@ -350,16 +386,50 @@ function CameraCtrl() {
 function Scene({ visible }: { visible: boolean }) {
     const [hovered, setHovered] = useState<string | null>(null);
     const [focused, setFocused] = useState<string | null>(null);
+    // Smooth mouse tracking for Parallax
     const nodeWorldPos = useRef<Record<string, THREE.Vector3>>({});
+    const mouseLerped = useRef(new THREE.Vector2(0, 0));
+    const targetMouse = useRef(new THREE.Vector2(0, 0));
+    const [isTouch, setIsTouch] = useState(false);
+
+    useEffect(() => {
+        setIsTouch(window.matchMedia("(hover: none)").matches);
+    }, []);
+
+    useFrame(() => {
+        if (!isTouch) {
+            // Spring interpolation for smooth parallax tracking
+            mouseLerped.current.lerp(targetMouse.current, 0.05);
+        }
+    });
+
+    const handlePointerMove = (e: any) => {
+        if (isTouch) return;
+        // Normalize coordinates to -0.5 to +0.5 based on viewport
+        const { width, height } = e.camera.viewport;
+        const x = (e.pointer.x * width) / 2; // R3F pointer is already -1 to 1 mathematically
+        const y = (e.pointer.y * height) / 2;
+        targetMouse.current.set(e.pointer.x, e.pointer.y);
+    };
+
+    const handlePointerLeave = () => {
+        if (isTouch) return;
+        targetMouse.current.set(0, 0);
+    };
 
     return (
-        <NCtx.Provider value={{ hovered, setHovered, focused, setFocused, nodeWorldPos, visible }}>
+        <NCtx.Provider value={{ hovered, setHovered, focused, setFocused, nodeWorldPos, mouseLerped, isTouch, visible }}>
             {/* No <color> or <fog> — let canvas stay transparent so portrait shows through */}
             <ambientLight intensity={0.2} />
             <pointLight position={[-12, 6, 4]} color="#FF4500" intensity={3} distance={35} />
             <pointLight position={[12, -6, 4]} color="#00BFFF" intensity={3} distance={35} />
 
-            <group onPointerMissed={() => setFocused(null)}>
+            <group
+                onPointerMissed={() => setFocused(null)}
+                onPointerMove={handlePointerMove}
+                onPointerLeave={handlePointerLeave}
+                onPointerOut={handlePointerLeave}
+            >
                 {CLUSTERS.map((c, i) => <Cluster key={c.id} data={c} idx={i} />)}
                 <CrossLines />
             </group>
