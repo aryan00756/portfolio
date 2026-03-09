@@ -9,6 +9,8 @@ import MorphingCardStack from "@/components/MorphingCardStack";
 import { FloatingResumeButton } from "@/components/FloatingResumeButton";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { GlitchHeading } from "@/components/GlitchHeading";
+import RecruiterMode from "@/components/RecruiterMode";
+import { RecruiterModeProvider, useRecruiterMode } from "@/components/RecruiterModeContext";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -33,10 +35,28 @@ export default function Home() {
   }, []);
 
   return (
+    <RecruiterModeProvider>
+      <HomeContent isMobile={isMobile} isOrbitalActive={isOrbitalActive} setIsOrbitalActive={setIsOrbitalActive} />
+    </RecruiterModeProvider>
+  );
+}
+
+function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
+  isMobile: boolean;
+  isOrbitalActive: boolean;
+  setIsOrbitalActive: (v: boolean) => void;
+}) {
+  const { active: recruiterActive } = useRecruiterMode();
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+
+  return (
     <main className="relative w-full h-full min-h-screen font-sans selection:bg-[#FF4500]/50 text-white overflow-hidden">
 
       {/* INITIALIZATION LOADING SCREEN */}
       <LoadingScreen />
+
+      {/* RECRUITER MODE TOGGLE + PANEL */}
+      <RecruiterMode />
 
       {/* Background Canvas Layer (No mouse values passed) */}
       <CanvasSequence isMobile={isMobile} />
@@ -50,13 +70,14 @@ export default function Home() {
       />
 
       {/* DOM Content Layer over Canvas */}
-      <div className="relative z-10">
+      <div className="relative z-10" style={{ marginRight: recruiterActive && isDesktop ? 280 : 0, transition: 'margin-right 0.4s ease' }}>
 
         {/* GLOBAL FLOATING RESUME BUTTON */}
         <FloatingResumeButton />
 
         {/* HERO SECTION */}
         <section
+          id="hero"
           className="h-[120vh] flex flex-col items-center justify-center relative"
         >
           <motion.div
@@ -116,12 +137,12 @@ export default function Home() {
           </motion.div>
         </section>
         {/* NEW ABOUT ME SECTION */}
-        <section className="bg-transparent -mt-px w-full relative z-20">
+        <section id="about" className="bg-transparent -mt-px w-full relative z-20">
           <AboutMeSection />
         </section>
 
         {/* SKILLS SECTION */}
-        <section className="h-auto min-h-[150vh] flex flex-col justify-center px-4 md:px-0 py-20">
+        <section id="skills" className="h-auto min-h-[150vh] flex flex-col justify-center px-4 md:px-0 py-20">
           <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 50 }}
@@ -144,7 +165,7 @@ export default function Home() {
         </section>
 
         {/* PROJECTS SECTION */}
-        <section className="min-h-[150vh] flex flex-col justify-center py-[40px] md:py-24 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative">
+        <section id="projects" className="min-h-[150vh] flex flex-col justify-center py-[40px] md:py-24 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative">
           <h2 className="font-display text-[clamp(1.4rem,8vw,2.4rem)] md:text-[clamp(2rem,6vw,3rem)] xl:text-[4rem] font-bold mb-8 md:mb-16 text-center leading-tight">
             DEPLOYED <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF4500]">MODELS.</span>
           </h2>
@@ -155,7 +176,7 @@ export default function Home() {
         </section>
 
         {/* CONTACT SECTION / RADIAL ORBITAL TIMELINE */}
-        <section className="min-h-[100vh] flex flex-col items-center justify-center relative py-20 overflow-hidden">
+        <section id="contact" className="min-h-[100vh] flex flex-col items-center justify-center relative py-20 overflow-hidden">
           {/* LAYER 1: Dark overlay gradient */}
           <div className="absolute inset-0 bg-transparent pointer-events-none z-0" />
 
@@ -256,3 +277,4 @@ export default function Home() {
     </main>
   );
 }
+
