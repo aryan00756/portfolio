@@ -21,7 +21,7 @@ const CARDS = [
         description: "Predicts customer churn using an Artificial Neural Network built with TensorFlow/Keras, deployed as an interactive Streamlit web app.",
         icon: Brain,
         tags: ["TensorFlow", "Keras", "Streamlit"],
-        link: "https://github.com/aryan00756/ANN-Chrun-Project",
+        link: "https://github.com/aryxn-builds/ANN-Chrun-Project",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
@@ -30,7 +30,7 @@ const CARDS = [
         description: "Binary sentiment classification on IMDB movie reviews using a Recurrent Neural Network with embedding and SimpleRNN layers.",
         icon: Activity,
         tags: ["TensorFlow", "Keras", "Scikit-Learn"],
-        link: "https://github.com/aryan00756/IMDB-Sentiment-Classification-using-Recurrent-Neural-Networks",
+        link: "https://github.com/aryxn-builds/IMDB-Sentiment-Classification-using-Recurrent-Neural-Networks",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
@@ -39,7 +39,7 @@ const CARDS = [
         description: "Neural network model predicting trader profitability based on trade frequency, size, and market sentiment, deployed via Streamlit.",
         icon: Layers,
         tags: ["TensorFlow", "Streamlit", "Pandas"],
-        link: "https://github.com/aryan00756/trader-profit-prediction",
+        link: "https://github.com/aryxn-builds/trader-profit-prediction",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
@@ -48,7 +48,7 @@ const CARDS = [
         description: "Cricket player movement analysis using MediaPipe Pose estimation — tracks hip, knee and ankle keypoints to compute knee angle metrics.",
         icon: Eye,
         tags: ["MediaPipe", "OpenCV", "Python"],
-        link: "https://github.com/aryan00756/-pose-based-movement-analysis",
+        link: "https://github.com/aryxn-builds/-pose-based-movement-analysis",
         linkLabel: "ACCESS REPOSITORY ↗"
     },
     {
@@ -57,7 +57,7 @@ const CARDS = [
         description: "Hands-on exploration of YOLO (You Only Look Once) for real-time object detection with custom weights and training pipelines.",
         icon: Grid,
         tags: ["YOLO", "OpenCV", "Python"],
-        link: "https://github.com/aryan00756/YOLO-Learning",
+        link: "https://github.com/aryxn-builds/YOLO-Learning",
         linkLabel: "ACCESS REPOSITORY ↗"
     }
 ];

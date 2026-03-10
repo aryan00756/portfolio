@@ -714,7 +714,7 @@ function PanelContent({
                 <p style={{ fontFamily: "monospace", fontSize: "0.6rem", color: "#FF4500", letterSpacing: "0.2em", margin: "0 0 8px" }}>
                     PROFILES
                 </p>
-                <ProfileLink icon={<Github size={14} />} label="GitHub" href="https://github.com/7etsuo" />
+                <ProfileLink icon={<Github size={14} />} label="GitHub" href="https://github.com/aryxn-builds" />
                 <ProfileLink icon={<Linkedin size={14} />} label="LinkedIn" href="https://linkedin.com/in/aryan-yadav" />
                 <ProfileLink icon={<Mail size={14} />} label="Email" href="mailto:aryanyadav.work@gmail.com" />
             </div>

@@ -64,7 +64,7 @@ const NODES: NodeData[] = [
         status: "completed",
         energy: 85,
         relatedIds: [1, 5],
-        actionUrl: "https://github.com/aryan00756",
+        actionUrl: "https://github.com/aryxn-builds",
         actionText: "Visit GitHub",
     },
     {
