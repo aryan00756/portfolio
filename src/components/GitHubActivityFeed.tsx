@@ -151,6 +151,32 @@ export default function GitHubActivityFeed() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
+  /* ─── BODY SCROLL LOCK ───
+     Fixes: scrolling inside panel also scrolls main page.
+     Locks body when panel is open; restores exact scroll position on close. */
+  useEffect(() => {
+    if (open) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflowY = "scroll";
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflowY = "";
+      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    }
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflowY = "";
+    };
+  }, [open]);
+
   /* ─── Last-updated label (updates every minute) ─── */
   useEffect(() => {
     const id = setInterval(() => {
@@ -444,7 +470,7 @@ export default function GitHubActivityFeed() {
       <AnimatePresence>
         {open && (
           <>
-            {/* Mobile backdrop — covers trigger (9993) */}
+            {/* Mobile backdrop — blocks scroll events reaching body */}
             {isMobile && (
               <motion.div
                 key="gh-backdrop"
@@ -452,6 +478,8 @@ export default function GitHubActivityFeed() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setOpen(false)}
+                onWheel={(e) => e.preventDefault()}
+                onTouchMove={(e) => e.preventDefault()}
                 style={{
                   position: "fixed",
                   inset: 0,
@@ -528,11 +556,14 @@ export default function GitHubActivityFeed() {
 
               <ProfileStrip stars={displayStars} commitCount={displayCommits} />
 
-              {/* Scrollable body */}
+              {/* Scrollable body — isolated from page scroll */}
               <div
+                onWheel={(e) => e.stopPropagation()}
+                onTouchMove={(e) => e.stopPropagation()}
                 style={{
                   flex: 1,
                   overflowY: "auto",
+                  overscrollBehavior: "contain",
                   scrollbarWidth: "thin",
                   scrollbarColor: "rgba(255,69,0,0.3) transparent",
                   ...({"WebkitOverflowScrolling": "touch"} as React.CSSProperties),

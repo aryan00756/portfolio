@@ -79,6 +79,60 @@ export default function RecruiterMode() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active]);
 
+    /* ─── BODY SCROLL LOCK (desktop panel) ───
+       Locks body when desktop sidebar is open so panel scroll
+       doesn't bubble to the main page. */
+    useEffect(() => {
+        if (!isMobile) {
+            if (active) {
+                const scrollY = window.scrollY;
+                document.body.style.position = "fixed";
+                document.body.style.top = `-${scrollY}px`;
+                document.body.style.width = "100%";
+                document.body.style.overflowY = "scroll";
+            } else {
+                const scrollY = document.body.style.top;
+                document.body.style.position = "";
+                document.body.style.top = "";
+                document.body.style.width = "";
+                document.body.style.overflowY = "";
+                window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            }
+        }
+        return () => {
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+            document.body.style.overflowY = "";
+        };
+    }, [active, isMobile]);
+
+    /* ─── BODY SCROLL LOCK (mobile sheet) ─── */
+    useEffect(() => {
+        if (isMobile) {
+            if (mobileSheetOpen) {
+                const scrollY = window.scrollY;
+                document.body.style.position = "fixed";
+                document.body.style.top = `-${scrollY}px`;
+                document.body.style.width = "100%";
+                document.body.style.overflowY = "scroll";
+            } else {
+                const scrollY = document.body.style.top;
+                document.body.style.position = "";
+                document.body.style.top = "";
+                document.body.style.width = "";
+                document.body.style.overflowY = "";
+                window.scrollTo(0, parseInt(scrollY || "0") * -1);
+            }
+        }
+        return () => {
+            document.body.style.position = "";
+            document.body.style.top = "";
+            document.body.style.width = "";
+            document.body.style.overflowY = "";
+        };
+    }, [mobileSheetOpen, isMobile]);
+
     // Scroll spy
     useEffect(() => {
         if (!active) return;
@@ -287,6 +341,8 @@ export default function RecruiterMode() {
                         animate={{ x: 0 }}
                         exit={{ x: 280 }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        onWheel={(e) => e.stopPropagation()}
+                        onTouchMove={(e) => e.stopPropagation()}
                         style={{
                             position: "fixed",
                             right: 0,
@@ -299,6 +355,7 @@ export default function RecruiterMode() {
                             zIndex: 9990,
                             padding: "24px 20px",
                             overflowY: "auto",
+                            overscrollBehavior: "contain",
                             display: "flex",
                             flexDirection: "column",
                             gap: 16,
@@ -316,13 +373,15 @@ export default function RecruiterMode() {
             <AnimatePresence>
                 {active && isMobile && mobileSheetOpen && (
                     <>
-                        {/* Dark backdrop — covers everything including GitHub trigger button */}
+                        {/* Dark backdrop — blocks scroll events from reaching body */}
                         <motion.div
                             key="rm-backdrop"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setMobileSheetOpen(false)}
+                            onWheel={(e) => e.preventDefault()}
+                            onTouchMove={(e) => e.preventDefault()}
                             style={{
                                 position: "fixed",
                                 inset: 0,
@@ -391,7 +450,11 @@ export default function RecruiterMode() {
                             >
                                 <X size={18} />
                             </button>
-                            <div style={{ flex: 1, overflowY: "auto" }}>
+                            <div
+                                onWheel={(e) => e.stopPropagation()}
+                                onTouchMove={(e) => e.stopPropagation()}
+                                style={{ flex: 1, overflowY: "auto", overscrollBehavior: "contain" }}
+                            >
                                 <PanelContent
                                     activeSection={activeSection}
                                     scrollTo={(id) => {
