@@ -32,10 +32,11 @@ async function fetchCommitMessage(repoName: string, sha: string): Promise<string
   const key = `${repoName}@${sha}`;
   if (commitMsgCache.has(key)) return commitMsgCache.get(key)!;
   try {
-    const res = await fetch(`https://api.github.com/repos/${repoName}/commits/${sha}`);
+    // Use proxy route so the request is server-side on Vercel (no CORS)
+    const res = await fetch(`/api/github/commit?repo=${encodeURIComponent(repoName)}&sha=${encodeURIComponent(sha)}`);
     if (!res.ok) return null;
     const data = await res.json();
-    const msg: string = data.commit?.message?.split('\n')[0] ?? '';
+    const msg: string = data.message ?? '';
     if (msg) commitMsgCache.set(key, msg);
     return msg || null;
   } catch {
@@ -259,13 +260,12 @@ export default function GitHubActivityFeed() {
     setLoading(true);
     setError(false);
     try {
-      // Bug 1 fix: fetch 3 pages (up to 300 events) so the 30-day graph has
-      // enough history even when many pushes happen on a single day.
+      // Bug 1 fix: fetch 3 pages via proxy routes (server-side, no CORS on Vercel)
       const [p1Res, p2Res, p3Res, reposRes] = await Promise.all([
-        fetch(`https://api.github.com/users/${GH_USER}/events/public?per_page=100&page=1`),
-        fetch(`https://api.github.com/users/${GH_USER}/events/public?per_page=100&page=2`),
-        fetch(`https://api.github.com/users/${GH_USER}/events/public?per_page=100&page=3`),
-        fetch(`https://api.github.com/users/${GH_USER}/repos?per_page=100`),
+        fetch(`/api/github/events?page=1`),
+        fetch(`/api/github/events?page=2`),
+        fetch(`/api/github/events?page=3`),
+        fetch(`/api/github/repos`),
       ]);
       if (!p1Res.ok || !reposRes.ok) throw new Error("API error");
 
