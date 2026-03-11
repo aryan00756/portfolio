@@ -152,31 +152,6 @@ export default function GitHubActivityFeed() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  /* ─── BODY SCROLL LOCK ───
-     Fixes: scrolling inside panel also scrolls main page.
-     Locks body when panel is open; restores exact scroll position on close. */
-  useEffect(() => {
-    if (open) {
-      const scrollY = window.scrollY;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
-      document.body.style.overflowY = "scroll";
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.style.overflowY = "";
-      window.scrollTo(0, parseInt(scrollY || "0") * -1);
-    }
-    return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.style.overflowY = "";
-    };
-  }, [open]);
 
   /* ─── Last-updated label (updates every minute) ─── */
   useEffect(() => {
@@ -556,12 +531,13 @@ export default function GitHubActivityFeed() {
 
               <ProfileStrip stars={displayStars} commitCount={displayCommits} />
 
-              {/* Scrollable body — isolated from page scroll */}
+              {/* Scrollable body — CSS-only scroll isolation (no body lock) */}
               <div
                 onWheel={(e) => e.stopPropagation()}
                 onTouchMove={(e) => e.stopPropagation()}
                 style={{
                   flex: 1,
+                  minHeight: 0,           // critical: allows flex child to overflow
                   overflowY: "auto",
                   overscrollBehavior: "contain",
                   scrollbarWidth: "thin",

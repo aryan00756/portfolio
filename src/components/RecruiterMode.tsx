@@ -79,59 +79,6 @@ export default function RecruiterMode() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active]);
 
-    /* ─── BODY SCROLL LOCK (desktop panel) ───
-       Locks body when desktop sidebar is open so panel scroll
-       doesn't bubble to the main page. */
-    useEffect(() => {
-        if (!isMobile) {
-            if (active) {
-                const scrollY = window.scrollY;
-                document.body.style.position = "fixed";
-                document.body.style.top = `-${scrollY}px`;
-                document.body.style.width = "100%";
-                document.body.style.overflowY = "scroll";
-            } else {
-                const scrollY = document.body.style.top;
-                document.body.style.position = "";
-                document.body.style.top = "";
-                document.body.style.width = "";
-                document.body.style.overflowY = "";
-                window.scrollTo(0, parseInt(scrollY || "0") * -1);
-            }
-        }
-        return () => {
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
-            document.body.style.overflowY = "";
-        };
-    }, [active, isMobile]);
-
-    /* ─── BODY SCROLL LOCK (mobile sheet) ─── */
-    useEffect(() => {
-        if (isMobile) {
-            if (mobileSheetOpen) {
-                const scrollY = window.scrollY;
-                document.body.style.position = "fixed";
-                document.body.style.top = `-${scrollY}px`;
-                document.body.style.width = "100%";
-                document.body.style.overflowY = "scroll";
-            } else {
-                const scrollY = document.body.style.top;
-                document.body.style.position = "";
-                document.body.style.top = "";
-                document.body.style.width = "";
-                document.body.style.overflowY = "";
-                window.scrollTo(0, parseInt(scrollY || "0") * -1);
-            }
-        }
-        return () => {
-            document.body.style.position = "";
-            document.body.style.top = "";
-            document.body.style.width = "";
-            document.body.style.overflowY = "";
-        };
-    }, [mobileSheetOpen, isMobile]);
 
     // Scroll spy
     useEffect(() => {
@@ -453,7 +400,7 @@ export default function RecruiterMode() {
                             <div
                                 onWheel={(e) => e.stopPropagation()}
                                 onTouchMove={(e) => e.stopPropagation()}
-                                style={{ flex: 1, overflowY: "auto", overscrollBehavior: "contain" }}
+                                style={{ flex: 1, minHeight: 0, overflowY: "auto", overscrollBehavior: "contain" }}
                             >
                                 <PanelContent
                                     activeSection={activeSection}
