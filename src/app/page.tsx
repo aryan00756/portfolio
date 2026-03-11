@@ -111,7 +111,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
               className="mt-12 md:mt-16 w-full flex justify-center px-4"
             >
               <a
-                href="/resume/aryan-yadav-resume.pdf"
+                href="/resume/RESUME.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 download
