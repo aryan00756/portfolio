@@ -146,7 +146,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="h-auto min-h-[150vh] flex flex-col justify-center px-4 md:px-0 py-20">
+        <section id="skills" className="h-auto min-h-[100vh] flex flex-col justify-center px-4 md:px-0 py-10">
           <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 50 }}
@@ -169,7 +169,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
         </section>
 
         {/* PROJECTS SECTION */}
-        <section id="projects" className="min-h-[150vh] flex flex-col justify-center py-[40px] md:py-24 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative">
+        <section id="projects" className="min-h-[100vh] flex flex-col justify-center py-[20px] md:py-12 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative">
           <h2 className="font-display text-[clamp(1.4rem,8vw,2.4rem)] md:text-[clamp(2rem,6vw,3rem)] xl:text-[4rem] font-bold mb-8 md:mb-16 text-center leading-tight">
             DEPLOYED <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF4500]">MODELS.</span>
           </h2>
