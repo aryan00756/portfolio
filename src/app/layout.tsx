@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Orbitron } from "next/font/google";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import { EasterEggs } from "@/components/EasterEggs";
@@ -12,6 +12,12 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
+});
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -42,7 +48,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased bg-[#050508] text-white font-sans`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${orbitron.variable} antialiased bg-[#050508] text-white font-sans`}
       >
         <EasterEggs />
         <SmoothScroll>{children}</SmoothScroll>

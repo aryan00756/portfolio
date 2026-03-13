@@ -6,6 +6,7 @@ import ScrollingCaptions from "@/components/hero/ScrollingCaptions";
 import NeuralClusters from "@/components/NeuralClusters";
 import RadialOrbitalTimeline from "@/components/RadialOrbitalTimeline";
 import MorphingCardStack from "@/components/MorphingCardStack";
+import SkillTree from "@/components/SkillTree";
 import { FloatingResumeButton } from "@/components/FloatingResumeButton";
 import { LoadingScreen } from "@/components/LoadingScreen";
 import { GlitchHeading } from "@/components/GlitchHeading";
@@ -177,6 +178,11 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
           <div className="relative z-10 w-full mt-4">
             <MorphingCardStack />
           </div>
+        </section>
+
+        {/* SKILL TREE CERTIFICATIONS SECTION */}
+        <section id="certifications" className="w-full relative z-20">
+          <SkillTree />
         </section>
 
         {/* CONTACT SECTION / RADIAL ORBITAL TIMELINE */}
