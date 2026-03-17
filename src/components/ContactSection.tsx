@@ -135,13 +135,50 @@ export default function ContactSection() {
     a.click();
   };
 
+  const useOrbitalSize = () => {
+    const [size, setSize] = useState(360);
+    useEffect(() => {
+      const update = () => {
+        const w = window.innerWidth;
+        if (w < 380) setSize(260);
+        else if (w < 480) setSize(300);
+        else if (w < 768) setSize(320);
+        else if (w < 1024) setSize(340);
+        else setSize(360);
+      };
+      update();
+      window.addEventListener('resize', update);
+      return () => window.removeEventListener('resize', update);
+    }, []);
+    return size;
+  };
+
+  const ORBITAL_SIZE = useOrbitalSize();
+  const center = ORBITAL_SIZE / 2;
+  const radius = ORBITAL_SIZE * 0.44;
+  const nodeSize = ORBITAL_SIZE < 300 ? 40 : ORBITAL_SIZE < 340 ? 44 : 52;
+
+  const getNodePos = (angleDeg: number) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    return {
+      left: center + radius * Math.sin(rad) - (nodeSize / 2),
+      top: center - radius * Math.cos(rad) - (nodeSize / 2),
+    };
+  };
+
+  const githubPos = getNodePos(0);
+  const linkedinPos = getNodePos(72);
+  const emailPos = getNodePos(144);
+  const hiremePos = getNodePos(216);
+  const resumePos = getNodePos(288);
+
   const nodes = [
     {
       id: "github",
       label: "GITHUB",
       color: "#FF4500",
       icon: Github,
-      top: 4, left: 154,
+      pos: githubPos,
       tooltip: ["GITHUB", "github.com/aryxn-builds", "18 Public Repos · Active", "VIEW PROFILE ↗"],
       action: () => window.open("https://github.com/aryxn-builds", "_blank"),
       dur: "3s"
@@ -151,7 +188,7 @@ export default function ContactSection() {
       label: "LINKEDIN",
       color: "#00BFFF",
       icon: Linkedin,
-      top: 154, right: 4,
+      pos: linkedinPos,
       tooltip: ["LINKEDIN", "linkedin.com/in/aryan0203", "ML Engineer · B.Tech CSE", "CONNECT ↗"],
       action: () => window.open("https://www.linkedin.com/in/aryan0203", "_blank"),
       dur: "4s"
@@ -161,7 +198,7 @@ export default function ContactSection() {
       label: "EMAIL",
       color: "#CC44FF",
       icon: Mail,
-      bottom: 50, right: 50,
+      pos: emailPos,
       tooltip: ["EMAIL", "ay6033756@gmail.com", "Response time: < 24 hours", "SEND EMAIL ↗"],
       action: () => window.location.href = "mailto:ay6033756@gmail.com",
       dur: "3.5s"
@@ -171,7 +208,7 @@ export default function ContactSection() {
       label: "HIRE ME",
       color: "#00FF88",
       icon: Briefcase,
-      bottom: 50, left: 50,
+      pos: hiremePos,
       tooltip: ["HIRE ME", "ML · GenAI · Computer Vision", "Internship or Full-time", "GET IN TOUCH ↗"],
       action: () => window.location.href = "mailto:ay6033756@gmail.com?subject=Internship%20Opportunity%20-%20Aryan%20Yadav",
       dur: "4.5s"
@@ -181,12 +218,16 @@ export default function ContactSection() {
       label: "RESUME",
       color: "#FF8C00",
       icon: Download,
-      top: 154, left: 4,
+      pos: resumePos,
       tooltip: ["RESUME", "Aryan Yadav · ML Engineer", "Updated 2026 · PDF", "DOWNLOAD ↗"],
       action: handleDownload,
       dur: "2.5s"
     }
   ];
+
+  const coreSize = ORBITAL_SIZE < 300 ? 60 : ORBITAL_SIZE < 340 ? 68 : 80;
+  const coreFontSize = ORBITAL_SIZE < 300 ? '14px' : ORBITAL_SIZE < 340 ? '16px' : '18px';
+  const labelSize = ORBITAL_SIZE < 300 ? '0.45rem' : ORBITAL_SIZE < 340 ? '0.5rem' : '0.55rem';
 
   return (
     <section 
@@ -284,41 +325,44 @@ export default function ContactSection() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.3, type: "spring", stiffness: 200 }}
-          className="relative w-[300px] h-[300px] lg:w-[360px] lg:h-[360px] shrink-0 transform scale-[0.83] lg:scale-100"
+          className="relative shrink-0"
+          style={{ width: ORBITAL_SIZE, height: ORBITAL_SIZE }}
         >
           {/* Orbital Rings */}
           <div 
-            className="absolute top-0 left-0 w-[360px] h-[360px] rounded-full pointer-events-none"
-            style={{ border: "1px dashed rgba(255,69,0,0.15)", animation: "spin 40s linear infinite" }}
+            className="absolute rounded-full pointer-events-none"
+            style={{ 
+              top: 0, left: 0,
+              width: ORBITAL_SIZE, height: ORBITAL_SIZE,
+              border: "1px dashed rgba(255,69,0,0.15)", animation: "spin 40s linear infinite" 
+            }}
           />
           <div 
-            className="absolute top-[50px] left-[50px] w-[260px] h-[260px] rounded-full pointer-events-none"
-            style={{ border: "1px dashed rgba(0,191,255,0.1)", animation: "spinReverse 28s linear infinite" }}
+            className="absolute rounded-full pointer-events-none"
+            style={{ 
+              top: ORBITAL_SIZE * 0.14, left: ORBITAL_SIZE * 0.14,
+              width: ORBITAL_SIZE * 0.72, height: ORBITAL_SIZE * 0.72,
+              border: "1px dashed rgba(0,191,255,0.1)", animation: "spinReverse 28s linear infinite" 
+            }}
           />
           <div 
-            className="absolute top-[100px] left-[100px] w-[160px] h-[160px] rounded-full pointer-events-none"
-            style={{ border: "1px dashed rgba(255,69,0,0.2)", animation: "spin 18s linear infinite" }}
+            className="absolute rounded-full pointer-events-none"
+            style={{ 
+              top: ORBITAL_SIZE * 0.28, left: ORBITAL_SIZE * 0.28,
+              width: ORBITAL_SIZE * 0.44, height: ORBITAL_SIZE * 0.44,
+              border: "1px dashed rgba(255,69,0,0.2)", animation: "spin 18s linear infinite" 
+            }}
           />
 
           {/* SVG Connection Lines */}
-          <svg className="absolute top-0 left-0 w-full h-full pointer-events-none z-[2]">
+          <svg 
+            className="absolute top-0 left-0 pointer-events-none z-[2]"
+            style={{ width: ORBITAL_SIZE, height: ORBITAL_SIZE }}
+            viewBox={`0 0 ${ORBITAL_SIZE} ${ORBITAL_SIZE}`}
+          >
             {nodes.map((node) => {
-              const cx = 180;
-              const cy = 180;
-              let nx = cx, ny = cx;
-              
-              if (node.top !== undefined && node.left !== undefined) {
-                nx = node.left + 26; ny = node.top + 26;
-              } else if (node.top !== undefined && node.right !== undefined) {
-                nx = 360 - node.right - 26; ny = node.top + 26;
-              } else if (node.bottom !== undefined && node.right !== undefined) {
-                nx = 360 - node.right - 26; ny = 360 - node.bottom - 26;
-              } else if (node.bottom !== undefined && node.left !== undefined) {
-                nx = node.left + 26; ny = 360 - node.bottom - 26;
-              }
-
               const pathId = `path-${node.id}`;
-              const d = `M ${cx} ${cy} L ${nx} ${ny}`;
+              const d = `M ${center} ${center} L ${node.pos.left + nodeSize / 2} ${node.pos.top + nodeSize / 2}`;
               
               return (
                 <g key={node.id}>
@@ -340,8 +384,9 @@ export default function ContactSection() {
 
           {/* Center Core */}
           <div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] rounded-full flex items-center justify-center font-display font-bold text-lg text-white z-[5]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center font-display font-bold text-white z-[5]"
             style={{
+              width: coreSize, height: coreSize, fontSize: coreFontSize,
               background: "linear-gradient(135deg, #FF4500, #FF8C00)",
               animation: "corePulse 2.5s ease-in-out infinite"
             }}
@@ -353,9 +398,10 @@ export default function ContactSection() {
           {nodes.map((node) => (
             <div 
               key={node.id}
-              className="group absolute w-[52px] h-[52px] rounded-full flex items-center justify-center z-10 transition-all duration-300 ease-out cursor-pointer hover:scale-[115%]"
+              className="group absolute rounded-full flex items-center justify-center z-10 transition-all duration-300 ease-out cursor-pointer hover:scale-[115%]"
               style={{
-                top: node.top, left: node.left, bottom: node.bottom, right: node.right,
+                top: node.pos.top, left: node.pos.left,
+                width: nodeSize, height: nodeSize,
                 background: `${node.color}1E`, // approx hex for rgba(x,y,z,0.12)
                 border: `1.5px solid ${node.color}`,
                 boxShadow: `0 0 20px ${node.color}40`
@@ -366,8 +412,8 @@ export default function ContactSection() {
               
               {/* Node Label */}
               <div 
-                className="absolute top-[56px] left-1/2 -translate-x-1/2 whitespace-nowrap font-mono text-[0.55rem] transition-opacity opacity-100 lg:opacity-100"
-                style={{ color: node.color }}
+                className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap font-mono transition-opacity opacity-100 lg:opacity-100"
+                style={{ color: node.color, fontSize: labelSize, top: nodeSize + 4 }}
               >
                 {node.label}
               </div>
