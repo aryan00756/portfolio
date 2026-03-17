@@ -233,7 +233,8 @@ export default function ContactSection() {
     <section 
       id="contact" 
       ref={containerRef}
-      className="min-h-[100vh] w-full flex flex-col items-center justify-center relative bg-[#050508]"
+      className="min-h-[100vh] w-full flex flex-col items-center justify-center relative"
+      style={{ background: "rgba(5,5,8,0.72)", backdropFilter: "blur(2px)" }}
     >
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes spin {
