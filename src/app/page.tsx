@@ -83,7 +83,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
         {/* HERO SECTION */}
         <section
           id="hero"
-          className="section-fade h-[120vh] flex flex-col items-center justify-center relative"
+          className="h-[120vh] flex flex-col items-center justify-center relative"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
@@ -142,12 +142,12 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
           </motion.div>
         </section>
         {/* NEW ABOUT ME SECTION */}
-        <section id="about" className="section-fade bg-transparent w-full relative z-20" style={{ marginTop: -60, paddingTop: 60 }}>
+        <section id="about" className="bg-transparent -mt-px w-full relative z-20">
           <AboutMeSection />
         </section>
 
         {/* SKILLS SECTION */}
-        <section id="skills" className="section-fade h-auto min-h-[100vh] flex flex-col justify-center px-4 md:px-0 py-10" style={{ marginTop: -60, paddingTop: 60 }}>
+        <section id="skills" className="h-auto min-h-[100vh] flex flex-col justify-center px-4 md:px-0 py-10">
           <motion.div
             whileInView={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 50 }}
@@ -170,7 +170,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
         </section>
 
         {/* PROJECTS SECTION */}
-        <section id="projects" className="section-fade min-h-[100vh] flex flex-col justify-center py-[20px] md:py-12 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative" style={{ marginTop: -60, paddingTop: 60 }}>
+        <section id="projects" className="min-h-[100vh] flex flex-col justify-center py-[20px] md:py-12 px-[16px] md:px-[80px] xl:px-24 max-w-[100vw] overflow-x-hidden relative">
           <h2 className="font-display text-[clamp(1.4rem,8vw,2.4rem)] md:text-[clamp(2rem,6vw,3rem)] xl:text-[4rem] font-bold mb-8 md:mb-16 text-center leading-tight">
             DEPLOYED <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00BFFF] to-[#FF4500]">MODELS.</span>
           </h2>
@@ -181,21 +181,19 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
         </section>
 
         {/* SKILL TREE CERTIFICATIONS SECTION */}
-        <section id="certifications" className="section-fade section-fade-skill-bottom w-full relative z-20" style={{ marginTop: -60, paddingTop: 60 }}>
+        <section id="certifications" className="w-full relative z-20">
           <SkillTree />
         </section>
 
-        {/* NEW CONTACT SECTION — section-fade classes applied inside ContactSection wrapper */}
-        <div className="section-fade section-fade-contact-top section-fade-contact-bottom" style={{ marginTop: -60, paddingTop: 60 }}>
-          <ContactSection />
-        </div>
+        {/* NEW CONTACT SECTION */}
+        <ContactSection />
 
         {/* SPACER SECTION FOR SEAMLESS INFINITE LOOP
             When using Lenis infinite scrolling, it abruptly loops the scroll container to the top.
             To make it invisible, the bottom of the page must look exactly like the top.
             Here we clone the Hero component text visually so the transition is pixel-perfect.
         */}
-        <section className="section-fade h-[120vh] flex flex-col items-center justify-center relative pointer-events-none" style={{ marginTop: -60, paddingTop: 60 }}>
+        <section className="h-[120vh] flex flex-col items-center justify-center relative pointer-events-none">
           <div className="flex flex-col items-center text-center px-4">
             <div>
               <h1 className="font-display text-5xl md:text-8xl font-bold uppercase tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-gray-500 drop-shadow-[0_0_15px_rgba(255,69,0,0.8)]">
