@@ -85,6 +85,8 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
           id="hero"
           className="h-[120vh] flex flex-col items-center justify-center relative"
         >
+          {/* Top fade — softens hero entry when loop restarts */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '180px', background: 'linear-gradient(to bottom, #050508 0%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -178,6 +180,8 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
           <div className="relative z-10 w-full mt-4">
             <MorphingCardStack />
           </div>
+          {/* Bottom fade — blends into Skill Tree */}
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '160px', background: 'linear-gradient(to top, #050508 0%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
         </section>
 
         {/* SKILL TREE CERTIFICATIONS SECTION */}
