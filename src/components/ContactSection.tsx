@@ -239,7 +239,7 @@ export default function ContactSection() {
       {/* Top fade */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '120px', background: 'linear-gradient(to bottom, #050508 0%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
       {/* Bottom fade */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '240px', background: 'linear-gradient(to top, #050508 0%, rgba(5,5,8,0.4) 60%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '320px', background: 'linear-gradient(to top, #050508 0%, #050508 10%, rgba(5,5,8,0.95) 20%, rgba(5,5,8,0.85) 35%, rgba(5,5,8,0.6) 55%, rgba(5,5,8,0.3) 75%, rgba(5,5,8,0.1) 90%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
 
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes spin {
@@ -581,7 +581,7 @@ export default function ContactSection() {
       </motion.div>
 
       {/* SECTION FOOTER */}
-      <div className="w-full mt-16 pt-6 border-t border-white/[0.05] text-center z-10 px-4">
+      <div className="w-full mt-16 pt-6 border-t border-white/[0.05] text-center z-10 px-4" style={{ opacity: 0.4, marginBottom: '60px' }}>
         <div className="font-mono text-[0.65rem] text-white/20 tracking-[0.15em]">
           BUILT WITH PASSION · DEPLOYED WITH PURPOSE
         </div>

@@ -86,7 +86,7 @@ function HomeContent({ isMobile, isOrbitalActive, setIsOrbitalActive }: {
           className="h-[120vh] flex flex-col items-center justify-center relative"
         >
           {/* Top fade — softens hero entry when loop restarts */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '180px', background: 'linear-gradient(to bottom, #050508 0%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '320px', background: 'linear-gradient(to bottom, #050508 0%, #050508 8%, rgba(5,5,8,0.95) 18%, rgba(5,5,8,0.8) 32%, rgba(5,5,8,0.55) 50%, rgba(5,5,8,0.25) 70%, rgba(5,5,8,0.08) 88%, transparent 100%)', zIndex: 10, pointerEvents: 'none' }} />
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
