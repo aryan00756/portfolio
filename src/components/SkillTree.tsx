@@ -109,24 +109,7 @@ const TRACKS: Track[] = [
         icon: "AI",
         certImage: "/certifications/GFG Ai tools certificates.jpg",
       },
-      {
-        id: "deep-learning",
-        label: "DEEP LEARNING",
-        fullName: "Deep Learning Specialization",
-        platform: "DeepLearning.AI (planned)",
-        xp: 2000,
-        status: "locked",
-        size: 44,
-      },
-      {
-        id: "tf-cert",
-        label: "TF CERT",
-        fullName: "TensorFlow Developer Certificate",
-        platform: "Google (planned)",
-        xp: 2500,
-        status: "locked",
-        size: 44,
-      },
+
     ],
   },
   {
@@ -216,24 +199,6 @@ const TRACKS: Track[] = [
         badge: "NEW",
         certImage: "/certifications/mcp_certificate.png",
       },
-      {
-        id: "langchain",
-        label: "LANGCHAIN",
-        fullName: "LangChain + RAG Mastery",
-        platform: "(planned)",
-        xp: 1800,
-        status: "locked",
-        size: 44,
-      },
-      {
-        id: "fine-tuning",
-        label: "FINE-TUNING",
-        fullName: "LoRA/QLoRA Fine-Tuning",
-        platform: "(planned)",
-        xp: 2200,
-        status: "locked",
-        size: 44,
-      },
     ],
   },
   {
@@ -270,58 +235,17 @@ const TRACKS: Track[] = [
         certImage: "/certifications/SIH.jpg",
       },
       {
-        id: "kaggle-comp",
-        label: "KAGGLE COMP",
-        fullName: "Kaggle ML Competition",
-        platform: "Kaggle (planned)",
-        xp: 2000,
-        status: "locked",
-        size: 44,
-      },
-      {
-        id: "open-source",
-        label: "OPEN SOURCE",
-        fullName: "Open Source Contribution",
-        platform: "GitHub (planned)",
-        xp: 1500,
-        status: "locked",
-        size: 44,
-      },
-    ],
-  },
-  {
-    id: "future",
-    title: "NEXT TARGETS",
-    color: "rgba(255,255,255,0.15)",
-    nodes: [
-      {
-        id: "mlops",
-        label: "MLOPS",
-        fullName: "MLOps Fundamentals",
-        platform: "(planned)",
-        xp: 1800,
-        status: "locked",
-        size: 44,
-      },
-
-      {
-        id: "cloud-ml",
-        label: "CLOUD ML",
-        fullName: "Google Cloud ML Engineer",
-        platform: "Google Cloud (planned)",
-        xp: 3000,
-        status: "locked",
-        size: 44,
-      },
-      {
-        id: "faang-ready",
-        label: "FAANG READY",
-        fullName: "FAANG ML Interview Ready",
-        platform: "Personal Goal",
-        xp: 5000,
-        status: "locked",
-        size: 44,
-        isFinalBoss: true,
+        id: "adobe-hackathon",
+        label: "ADOBE GENAI",
+        fullName: "Adobe GenAI Hackathon",
+        platform: "Adobe",
+        xp: 1200,
+        skills: ["Generative AI", "Problem Solving", "Hackathon"],
+        status: "unlocked",
+        size: 52,
+        icon: "AD",
+        badge: "ACHIEVEMENT",
+        certImage: "/certifications/Adobe hackerthon certificate.jpg",
       },
     ],
   },
@@ -865,79 +789,8 @@ export default function SkillTree() {
           </p>
         </motion.div>
 
-        {/* ── XP BAR ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col items-center mb-8"
-        >
-          <div
-            style={{
-              fontFamily: "monospace",
-              fontSize: "0.7rem",
-              color: "#FF4500",
-              letterSpacing: "0.1em",
-              marginBottom: 8,
-            }}
-          >
-            TOTAL XP: 11,800 · RANK: AI ENGINEER II
-          </div>
-          <div
-            style={{
-              width: "min(400px, 80%)",
-              height: 4,
-              borderRadius: 2,
-              background: "rgba(255,255,255,0.05)",
-              overflow: "hidden",
-            }}
-          >
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "78%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-              style={{
-                height: "100%",
-                borderRadius: 2,
-                background: "linear-gradient(90deg, #FF4500, #FF8C00)",
-              }}
-            />
-          </div>
-        </motion.div>
-
-        {/* ── LEGEND ── */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="flex justify-center gap-6 mb-10 flex-wrap"
-        >
-          {[
-            { color: "#FF4500", label: "UNLOCKED" },
-            { color: "#00BFFF", label: "IN PROGRESS" },
-            { color: "rgba(255,255,255,0.3)", label: "PLANNED" },
-          ].map((item) => (
-            <div key={item.label} className="flex items-center gap-2">
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: "50%",
-                  background: item.color,
-                }}
-              />
-              <span style={{ fontFamily: "monospace", fontSize: "0.65rem", color: "rgba(255,255,255,0.5)" }}>
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
-
         {/* ── TREE TRACKS ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
           {TRACKS.map((track, ti) => (
             <motion.div
               key={track.id}

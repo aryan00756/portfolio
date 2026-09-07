@@ -406,7 +406,7 @@ export default function MorphingCardStack() {
                         <CardStack
                             items={cardStackItems}
                             cardWidth={windowWidth < 768 ? windowWidth - 32 : windowWidth < 1024 ? Math.min(windowWidth - 80, 560) : windowWidth < 1280 ? Math.min(windowWidth * 0.9, 600) : 520}
-                            cardHeight={windowWidth < 768 ? 240 : windowWidth < 1024 ? 260 : windowWidth < 1280 ? 280 : 320}
+                            cardHeight={windowWidth < 768 ? 340 : windowWidth < 1024 ? 360 : windowWidth < 1280 ? 380 : 400}
                             overlap={0.48}
                             spreadDeg={windowWidth < 768 ? 15 : windowWidth < 1024 ? 30 : windowWidth < 1280 ? 36 : 48}
                             hideInactiveCards={windowWidth < 768}
@@ -513,11 +513,6 @@ export default function MorphingCardStack() {
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center justify-center md:justify-start gap-2 text-[0.65rem] min-[375px]:text-[0.7rem] md:text-[0.8rem] font-mono tracking-[0.1em] md:tracking-[0.15em] uppercase transition-colors duration-300 pointer-events-auto min-h-[44px] w-full md:w-auto text-[#00BFFF] hover:text-[#FF4500]"
-                                                        style={{
-                                                            border: '0.5px solid rgba(0,191,255,0.4)',
-                                                            borderRadius: '6px',
-                                                            padding: '4px 10px',
-                                                        }}
                                                         onClick={(e) => {
                                                             if (!isActive) e.preventDefault();
                                                         }}
@@ -595,11 +590,6 @@ export default function MorphingCardStack() {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center justify-center md:justify-start gap-2 text-[0.65rem] min-[375px]:text-[0.7rem] md:text-[0.8rem] font-mono tracking-[0.1em] md:tracking-[0.15em] uppercase transition-colors duration-300 min-h-[44px] w-full md:w-auto text-[#00BFFF] hover:text-[#FF4500]"
-                                                    style={{
-                                                        border: '0.5px solid rgba(0,191,255,0.4)',
-                                                        borderRadius: '6px',
-                                                        padding: '4px 10px',
-                                                    }}
                                                 >
                                                     [ LIVE DEMO ] <ExternalLink size={12} />
                                                 </a>
